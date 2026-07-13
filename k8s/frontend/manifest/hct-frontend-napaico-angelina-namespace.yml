@@ -1,0 +1,6 @@
+# kubectl create namespace hct-frontend-napaico-angelina-namespace (COMANDO)
+# kubectl apply -f hct-frontend-napaico-angelina-namespace.yml (yml)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hct-frontend-napaico-angelina-namespace

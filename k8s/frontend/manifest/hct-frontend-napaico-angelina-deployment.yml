@@ -1,0 +1,24 @@
+# kubectl apply -f hct-frontend-napaico-angelina-deployment.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hct-frontend-napaico-angelina-deployment
+  namespace: hct-frontend-napaico-angelina-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hct-frontend-napaico-angelina-deployment        # Debe coincidir con las etiquetas del Service
+  template:
+    metadata:
+      labels:
+        app: hct-frontend-napaico-angelina-deployment      # Debe coincidir con las etiquetas del Service
+    spec:
+      containers:
+      - name: hct-frontend-napaico-angelina-container
+        image: valencia123/hct-frontend:latest  # Reemplaza con tu imagen Docker Hub
+        imagePullPolicy: IfNotPresent        # Evitar traer siempre la última versión si hay una actual
+        envFrom:
+        - secretRef:
+            name: hct-frontend-napaico-angelina-secret  # Esto cargará todos los valores como variables de entorno

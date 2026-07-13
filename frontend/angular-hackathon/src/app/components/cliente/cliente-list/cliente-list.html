@@ -1,0 +1,99 @@
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+
+  <!-- Header de la sección -->
+  <div class="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-base font-bold text-slate-900">Directorio de Clientes</h2>
+      <p class="text-sm text-slate-400 mt-0.5">Gestión de usuarios registrados en el sistema.</p>
+    </div>
+    <button (click)="openModal()"
+      class="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold px-4 py-2 rounded-lg text-sm transition-colors duration-150 shadow-sm">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nuevo Cliente
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead>
+        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 font-semibold">
+          <th class="px-6 py-3">Documento</th>
+          <th class="px-6 py-3">Nombre Completo</th>
+          <th class="px-6 py-3">Contacto</th>
+          <th class="px-6 py-3">Licencia</th>
+          <th class="px-6 py-3 text-center">Estado</th>
+          <th class="px-6 py-3 text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        @for (cliente of Clientes(); track cliente.id) {
+          <tr class="hover:bg-slate-50 transition-colors duration-100"
+              [class.opacity-50]="cliente.estado !== 'Activo'">
+            <td class="px-6 py-4 font-semibold text-slate-800">{{ cliente.dni }}</td>
+            <td class="px-6 py-4">
+              <span class="font-semibold text-slate-900">{{ cliente.nombres }} {{ cliente.apellidos }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <div class="font-medium text-slate-700">{{ cliente.celular }}</div>
+              <div class="text-xs text-violet-600 mt-0.5">{{ cliente.correo }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="font-mono text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-md">{{ cliente.licencia }}</span>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <span [class]="cliente.estado === 'Activo'
+                ? 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200'
+                : 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200'">
+                <span [class]="cliente.estado === 'Activo' ? 'w-1.5 h-1.5 rounded-full bg-emerald-500' : 'w-1.5 h-1.5 rounded-full bg-rose-500'"></span>
+                {{ cliente.estado === 'Activo' ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="inline-flex items-center gap-1">
+                <button (click)="openModal(cliente)"
+                  class="px-3 py-1.5 text-xs font-semibold text-violet-600 hover:bg-violet-50 rounded-lg transition-colors duration-150">
+                  Editar
+                </button>
+                <button (click)="toggleStatus(cliente)"
+                  [class]="cliente.estado === 'Activo'
+                    ? 'px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors duration-150'
+                    : 'px-3 py-1.5 text-xs font-semibold text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors duration-150'">
+                  {{ cliente.estado === 'Activo' ? 'Inhabilitar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="px-6 py-16 text-center">
+              <div class="flex flex-col items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
+                  </svg>
+                </div>
+                <p class="text-sm text-slate-400 font-medium">No hay clientes registrados aún.</p>
+                <button (click)="openModal()"
+                  class="text-sm text-violet-600 font-semibold hover:underline">
+                  Registrar el primero
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if (isModalOpen()) {
+  <app-cliente-form
+    [cliente]="selectedStudent()"
+    (close)="closeModal()"
+    (save)="handleSave($event)">
+  </app-cliente-form>
+}

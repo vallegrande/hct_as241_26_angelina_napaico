@@ -1,0 +1,6 @@
+# kubectl create namespace hct-alquiler-napaico-angelina-namespace (COMANDO)
+# kubectl apply -f hct-alquiler-napaico-angelina-namespace.yml (yml)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hct-alquiler-napaico-angelina-namespace

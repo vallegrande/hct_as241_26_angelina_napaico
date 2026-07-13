@@ -1,0 +1,23 @@
+# kubectl apply -f hct-alquiler-napaico-angelina-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hct-alquiler-napaico-angelina-deployment
+  namespace: hct-alquiler-napaico-angelina-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hct-alquiler-napaico-angelina-deployment     
+  template:
+    metadata:
+      labels:
+        app: hct-alquiler-napaico-angelina-deployment   
+    spec:
+      containers:
+      - name: hct-alquiler-napaico-angelina-container
+        image: valencia123/hct-alquiler:latest
+        imagePullPolicy: IfNotPresent 
+        envFrom:
+        - secretRef:
+            name: hct-alquiler-napaico-angelina-secret

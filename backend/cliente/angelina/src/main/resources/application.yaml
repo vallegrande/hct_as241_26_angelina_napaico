@@ -1,0 +1,11 @@
+server:
+  port: ${SERVER_PORT:9000} 
+   
+spring:
+  application:
+    name: angelina
+  data:
+    mongodb:
+      database: hackathon
+      uri: ${SPRING_MONGODB_URI:mongodb+srv://angelinanapaico_db_user:ange12345678@cluster0.hiizd1a.mongodb.net/hackathon}
+
